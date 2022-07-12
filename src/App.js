@@ -26,8 +26,8 @@ const DUMMY_EXPENSES = [
 ];
 
 const App = () => {
- const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
-
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
+  //stateful lists
   const addExpenseHandler = expense => {
     // if we want to add to a new value an old value/state this is the correct way of doing it:
     setExpenses(prevExpenses => {
