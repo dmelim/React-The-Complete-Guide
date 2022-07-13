@@ -1,0 +1,19 @@
+.topCard {
+    background-color: gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2em;
+    padding: 2em;
+}
+
+.topCard .item {
+    margin: 2em;
+    padding: 2em;
+}
+
+.topCard button {
+    background-color: bisque;
+    border-color: burlywood;
+    color: brown;
+}

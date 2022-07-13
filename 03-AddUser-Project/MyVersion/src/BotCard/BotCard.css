@@ -1,0 +1,14 @@
+.botCard {
+    background-color: gainsboro;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2em;
+    padding: 2em;
+    width: 100%;
+}
+
+.botCard .item {
+    margin: 2em;
+    padding: 2em;
+}
