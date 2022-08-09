@@ -1,21 +1,26 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 const SimpleInput = (props) => {
   // useRef has a better use when we only want to store the value once
-  const nameInputRef = useRef();
+  // const nameInputRef = useRef();
   // if we need to track every single input change or even reset the value, use state is better
   const [enteredName, setEnteredName] = useState("");
-  const [enteredNameisValid, setEnteredNameisValid] = useState(false);
   const [enteredNameTouched, setEnteredNameTouched] = useState(false);
 
-  useEffect(() => {
-    if (enteredNameisValid) {
-      console.log("Name Input is valid!");
-    }
-  }, [enteredNameisValid]);
+  const enteredNameIsValid = enteredName.trim() !== "";
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
+
+  let formIsValid = false;
+  if (enteredNameIsValid) {
+    formIsValid = true;
+  }
 
   const nameInputChangeHandler = (event) => {
     setEnteredName(event.target.value);
+  };
+
+  const nameInputBlurHandler = (event) => {
+    setEnteredNameTouched(true);
   };
 
   const formSubmissionHandler = (event) => {
@@ -23,22 +28,15 @@ const SimpleInput = (props) => {
 
     setEnteredNameTouched(true);
 
-    if (enteredName.trim() === "") {
-      setEnteredNameisValid(false);
+    if (!enteredNameIsValid) {
       return;
     }
 
-    setEnteredNameisValid(true);
-
     console.log(enteredName);
-
-    const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue);
     // nameInputRef.current.value = "" => Not ideal. Don´t manipulate the DOM, the following option is better
     setEnteredName("");
+    setEnteredNameTouched(false);
   };
-
-  const nameInputIsInvalid = !enteredNameisValid && enteredNameTouched;
 
   const nameInputClasses = nameInputIsInvalid
     ? "form-control invalid"
@@ -49,10 +47,10 @@ const SimpleInput = (props) => {
       <div className={nameInputClasses}>
         <label htmlFor="name">Your Name</label>
         <input
-          ref={nameInputRef}
           type="text"
           id="name"
           onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
           value={enteredName}
         />
         {nameInputIsInvalid && (
@@ -60,7 +58,7 @@ const SimpleInput = (props) => {
         )}
       </div>
       <div className="form-actions">
-        <button>Submit</button>
+        <button disabled={!formIsValid}>Submit</button>
       </div>
     </form>
   );
