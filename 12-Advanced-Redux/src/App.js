@@ -3,8 +3,9 @@ import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, Fragment } from "react";
-import { uiActions } from "./store/ui-slice";
+// import { uiActions } from "./store/ui-slice";
 import Notification from "./components/UI/Notification";
+import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 let isInitial = true;
 
@@ -14,8 +15,27 @@ function App() {
   const cart = useSelector((state) => state.cart);
   const notification = useSelector((state) => state.ui.notification);
 
+  // Action Creator Thunk async function example (rest inside cart-slice) this alternative is better because it keeps the components lean
+
   useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
+
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
+  }, [cart, dispatch]);
+
+  // Inside the component async function example
+  /*useEffect(() => {
     const sendCartData = async () => {
+      
       dispatch(
         uiActions.showNotification({
           status: "pending",
@@ -31,7 +51,7 @@ function App() {
       if (!response.ok) {
         throw new Error("Sending cart data failed.");
       }
-
+      
       dispatch(
         uiActions.showNotification({
           status: "success",
@@ -53,7 +73,7 @@ function App() {
         })
       );
     });
-  }, [cart, dispatch]);
+  }, [cart, dispatch]);*/
 
   return (
     <Fragment>
