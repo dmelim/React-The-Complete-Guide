@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Route, useParams } from "react-router-dom";
+import { Link, Route, useParams, useRouteMatch } from "react-router-dom";
 import Comments from "../components/comments/Comments";
 import HighlightedQuote from "../components/quotes/HighlightedQuote";
 
@@ -11,6 +11,7 @@ const DUMMY_QUOTES = [
 const QuoteDetails = () => {
   // what is being used as an argument in the route is what is gonna be used in "params.quoteId" so "params.argument"
   const params = useParams();
+  const match = useRouteMatch();
 
   const quote = DUMMY_QUOTES.find((quote) => quote.id === params.quoteId);
 
@@ -22,7 +23,17 @@ const QuoteDetails = () => {
     <Fragment>
       <h1>Quote Details</h1>
       <HighlightedQuote text={quote.text} author={quote.author} />
-      <Route path={`/quotes/${params.quoteId}/comments`}>
+      {/* It dynamically updates the path, using the useRouteMatch hook. 
+      If we change the absolute path, the hook automatically updates it, 
+      making it easier to work with nested routes */}
+      <Route path={`${match.path}/comments`} exact>
+        <div className="centered">
+          <Link className="btn--flat" to={`${match.url}/comments`}>
+            Load Comments
+          </Link>
+        </div>
+      </Route>
+      <Route path={`${match.path}/comments`}>
         <Comments />
       </Route>
     </Fragment>
