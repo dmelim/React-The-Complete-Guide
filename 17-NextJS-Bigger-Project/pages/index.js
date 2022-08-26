@@ -22,8 +22,20 @@ const HomePage = (props) => {
   return <MeetupList meetups={props.meetups} />;
 };
 
-// the name of this function is reserved in nextJS, it looks for this function first before rendering the component, this function can be async.
+// GetStaticProps vs getServerSideProps, static props is faster, only use getServerSideProps if you need the req object and if the data changes multiple times per second
 
+/*// Only runs on the server, runs for every incoming request
+export async function getServerSideProps(context) {
+  const req = context.req;
+  const res = context.res;
+
+  // fetch data from an API
+
+  return {
+    props: DUMMY_MEETUPS,
+  };
+}*/
+// the name of this function is reserved in nextJS, it looks for this function first before rendering the component, this function can be async.
 export async function getStaticProps() {
   // we can do anything inside here, but we need to return an object
   return {
